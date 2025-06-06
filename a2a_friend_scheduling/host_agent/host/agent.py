@@ -258,7 +258,7 @@ def _get_initialized_host_agent_sync():
         friend_agent_urls = [
             "http://localhost:10002",  # Karley's Agent
             "http://localhost:10003",  # Nate's Agent
-            # "http://localhost:10004",  # Kaitlyn's Agent
+            "http://localhost:10004",  # Kaitlynn's Agent
         ]
 
         print("initializing host agent")

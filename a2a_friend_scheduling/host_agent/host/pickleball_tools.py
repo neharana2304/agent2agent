@@ -63,16 +63,16 @@ def list_court_availabilities(date: str) -> dict:
 
 
 def book_pickleball_court(
-    date: str, start_time: str, end_time: str, friend_names: List[str]
+    date: str, start_time: str, end_time: str, reservation_name: str
 ) -> dict:
     """
-    Books a pickleball court for a given date and time range with a list of friends.
+    Books a pickleball court for a given date and time range under a reservation name.
 
     Args:
         date: The date of the reservation, in YYYY-MM-DD format.
         start_time: The start time of the reservation, in HH:MM format.
         end_time: The end time of the reservation, in HH:MM format.
-        friend_names: A list of friends who will be playing.
+        reservation_name: The name for the reservation.
 
     Returns:
         A dictionary confirming the booking or providing an error.
@@ -92,11 +92,10 @@ def book_pickleball_court(
     if date not in COURT_SCHEDULE:
         return {"status": "error", "message": f"The court is not open on {date}."}
 
-    party_name = ", ".join(friend_names)
-    if not party_name:
+    if not reservation_name:
         return {
             "status": "error",
-            "message": "Cannot book a court without at least one friend name for the party.",
+            "message": "Cannot book a court without a reservation name.",
         }
 
     required_slots = []
@@ -115,9 +114,9 @@ def book_pickleball_court(
             }
 
     for slot in required_slots:
-        COURT_SCHEDULE[date][slot] = party_name
+        COURT_SCHEDULE[date][slot] = reservation_name
 
     return {
         "status": "success",
-        "message": f"Success! The pickleball court has been booked for {party_name} from {start_time} to {end_time} on {date}.",
+        "message": f"Success! The pickleball court has been booked for {reservation_name} from {start_time} to {end_time} on {date}.",
     }
