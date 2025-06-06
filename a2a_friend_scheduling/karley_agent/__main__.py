@@ -11,13 +11,13 @@ from a2a.types import (
     AgentCard,
     AgentSkill,
 )
+from agent import create_agent
+from agent_executor import KarleyAgentExecutor
 from dotenv import load_dotenv
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from karley_agent.agent import create_agent
-from karley_agent.agent_executor import KarleyAgentExecutor
 
 load_dotenv()
 

@@ -12,8 +12,7 @@ from a2a.utils import (
     new_artifact,
 )
 from a2a.utils.errors import ServerError
-
-from .agent import SchedulingAgent
+from agent import SchedulingAgent
 
 
 class SchedulingAgentExecutor(AgentExecutor):

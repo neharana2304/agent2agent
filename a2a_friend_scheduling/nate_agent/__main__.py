@@ -16,10 +16,9 @@ from a2a.types import (
     AgentCard,
     AgentSkill,
 )
+from agent import SchedulingAgent
+from agent_executor import SchedulingAgentExecutor
 from dotenv import load_dotenv
-
-from .agent import SchedulingAgent
-from .agent_executor import SchedulingAgentExecutor
 
 load_dotenv()
 

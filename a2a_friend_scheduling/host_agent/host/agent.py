@@ -257,7 +257,7 @@ def _get_initialized_host_agent_sync():
         # Hardcoded URLs for the friend agents
         friend_agent_urls = [
             "http://localhost:10002",  # Karley's Agent
-            # "http://localhost:10003",  # Nate's Agent
+            "http://localhost:10003",  # Nate's Agent
             # "http://localhost:10004",  # Kaitlyn's Agent
         ]
 

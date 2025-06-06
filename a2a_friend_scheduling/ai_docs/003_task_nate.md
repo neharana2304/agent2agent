@@ -34,13 +34,15 @@ Let's get your project set up.
 
 2.  **Install the necessary packages:**
 
+    From the root of the project (`a2a-friend-scheduling`), you can now install Nate's agent and all its dependencies with a single command:
     ```bash
-    pip install crewai crewai-tools python-dotenv pydantic
+    pip install -e a2a_friend_scheduling/nate_agent
     ```
+    This tells `pip` to install the `nate-scheduling-agent` package in "editable" (`-e`) mode, which is great for development.
 
 3.  **Set up your Gemini API key:**
 
-    Create a file named `.env` in your project directory.
+    Navigate to the `a2a_friend_scheduling/nate_agent` directory and create a file named `.env`.
 
     ```.env
     GOOGLE_API_KEY="your-google-api-key"
