@@ -261,6 +261,7 @@ def _get_initialized_host_agent_sync():
             # "http://localhost:10004",  # Kaitlyn's Agent
         ]
 
+        print("initializing host agent")
         hosting_agent_instance = await HostAgent.create(
             remote_agent_addresses=friend_agent_urls
         )

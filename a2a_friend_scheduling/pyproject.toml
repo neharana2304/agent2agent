@@ -19,7 +19,7 @@ dependencies = [
     "httpx",
 
     # Nate's agent dependencies (future)
-    # "crewai",
+    "crewai[tools]>=0.126.0",
 
     # Kaitlyn's agent dependencies (future)
     # "langgraph"
