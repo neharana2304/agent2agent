@@ -1,7 +1,6 @@
 import logging
 import os
 
-import click
 import uvicorn
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
@@ -31,10 +30,10 @@ class MissingAPIKeyError(Exception):
     pass
 
 
-@click.command()
-@click.option("--host", default="localhost")
-@click.option("--port", default=10002)
-def main(host, port):
+def main():
+    """Starts the agent server."""
+    host = "localhost"
+    port = 10002
     try:
         # Check for API key only if Vertex AI is not configured
         if not os.getenv("GOOGLE_GENAI_USE_VERTEXAI") == "TRUE":

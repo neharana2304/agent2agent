@@ -2,7 +2,6 @@ import logging
 import os
 import sys
 
-import click
 import httpx
 import uvicorn
 from a2a.server.apps import A2AStarletteApplication
@@ -27,11 +26,10 @@ class MissingAPIKeyError(Exception):
     """Exception for missing API key."""
 
 
-@click.command()
-@click.option("--host", "host", default="localhost")
-@click.option("--port", "port", default=10004)
-def main(host, port):
+def main():
     """Starts Kaitlyn's Agent server."""
+    host = "localhost"
+    port = 10004
     try:
         if not os.getenv("GOOGLE_API_KEY"):
             raise MissingAPIKeyError("GOOGLE_API_KEY environment variable not set.")

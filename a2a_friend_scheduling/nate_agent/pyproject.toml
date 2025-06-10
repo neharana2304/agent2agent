@@ -8,7 +8,6 @@ dependencies = [
     "crewai[tools]>=0.126.0",
     "pydantic",
     "python-dotenv",
-    "click",
     "uvicorn",
     "google-generativeai",
 ] 

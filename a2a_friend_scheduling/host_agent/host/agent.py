@@ -17,20 +17,18 @@ from a2a.types import (
 )
 from dotenv import load_dotenv
 from google.adk import Agent
-from google.adk.agents.callback_context import CallbackContext
 from google.adk.agents.readonly_context import ReadonlyContext
 from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
-from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 
 from .pickleball_tools import (
     book_pickleball_court,
     list_court_availabilities,
 )
-from .remote_agent_connection import RemoteAgentConnections, TaskUpdateCallback
+from .remote_agent_connection import RemoteAgentConnections
 
 load_dotenv()
 nest_asyncio.apply()
@@ -41,9 +39,7 @@ class HostAgent:
 
     def __init__(
         self,
-        task_callback: TaskUpdateCallback | None = None,
     ):
-        self.task_callback = task_callback
         self.remote_agent_connections: dict[str, RemoteAgentConnections] = {}
         self.cards: dict[str, AgentCard] = {}
         self.agents: str = ""

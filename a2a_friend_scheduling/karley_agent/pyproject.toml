@@ -7,6 +7,5 @@ dependencies = [
     "a2a-sdk>=0.2.5",
     "google-adk>=1.2.1",
     "python-dotenv",
-    "click",
     "uvicorn",
 ] 

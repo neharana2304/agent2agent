@@ -7,7 +7,7 @@ and starts the server to handle incoming requests.
 import logging
 import os
 
-import click
+import uvicorn
 from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
 from a2a.server.tasks import InMemoryTaskStore
@@ -30,11 +30,10 @@ class MissingAPIKeyError(Exception):
     """Exception for missing API key."""
 
 
-@click.command()
-@click.option("--host", "host", default="localhost")
-@click.option("--port", "port", default=10003)
-def main(host, port):
+def main():
     """Entry point for Nate's Scheduling Agent."""
+    host = "localhost"
+    port = 10003
     try:
         if not os.getenv("GOOGLE_API_KEY"):
             raise MissingAPIKeyError("GOOGLE_API_KEY environment variable not set.")
@@ -70,7 +69,6 @@ def main(host, port):
         server = A2AStarletteApplication(
             agent_card=agent_card, http_handler=request_handler
         )
-        import uvicorn
 
         uvicorn.run(server.build(), host=host, port=port)
 
