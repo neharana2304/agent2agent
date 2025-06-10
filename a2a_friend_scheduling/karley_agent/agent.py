@@ -26,7 +26,7 @@ def generate_karley_calendar() -> dict[str, list[str]]:
 KARLEY_CALENDAR = generate_karley_calendar()
 
 
-def get_karley_availability(start_date: str, end_date: str) -> str:
+def get_availability(start_date: str, end_date: str) -> str:
     """
     Checks Karley's availability for a given date range.
 
@@ -78,5 +78,5 @@ def create_agent() -> LlmAgent:
             *   **Polite and Concise:** Always be polite and to the point in your responses.
             *   **Stick to Your Role:** Do not engage in any conversation outside of scheduling. If asked other questions, politely state that you can only help with scheduling.
         """,
-        tools=[get_karley_availability],
+        tools=[get_availability],
     )

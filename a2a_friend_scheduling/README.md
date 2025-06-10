@@ -31,7 +31,7 @@ You will need to run each agent in a separate terminal window. The first time yo
 cd kaitlynn_agent
 uv venv
 source .venv/bin/activate
-uv run app/__main__.py
+uv run --active app/__main__.py
 ```
 
 ### Terminal 2: Run Nate Agent
@@ -39,7 +39,7 @@ uv run app/__main__.py
 cd nate_agent
 uv venv
 source .venv/bin/activate
-uv run .
+uv run --active .
 ```
 
 ### Terminal 3: Run Karley Agent
@@ -47,7 +47,7 @@ uv run .
 cd karley_agent
 uv venv
 source .venv/bin/activate
-uv run .
+uv run --active .
 ```
 
 ### Terminal 4: Run Host Agent
@@ -55,7 +55,7 @@ uv run .
 cd host_agent
 uv venv
 source .venv/bin/activate
-uv run --active  adk web      
+uv run --active adk web      
 ```
 
 ## Interact with the Host Agent

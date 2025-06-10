@@ -84,9 +84,8 @@ class HostAgent:
     async def create(
         cls,
         remote_agent_addresses: List[str],
-        task_callback: TaskUpdateCallback | None = None,
     ):
-        instance = cls(task_callback)
+        instance = cls()
         await instance._async_init_components(remote_agent_addresses)
         return instance
 
@@ -95,7 +94,6 @@ class HostAgent:
             model="gemini-2.5-flash-preview-04-17",
             name="Host_Agent",
             instruction=self.root_instruction,
-            before_model_callback=self.before_model_callback,
             description="This Host agent orchestrates scheduling pickleball with friends.",
             tools=[
                 self.send_message,
@@ -105,14 +103,15 @@ class HostAgent:
         )
 
     def root_instruction(self, context: ReadonlyContext) -> str:
-        current_agent = self.check_active_agent(context)
         return f"""
         **Role:** You are the Host Agent, an expert scheduler for pickleball games. Your primary function is to coordinate with friend agents to find a suitable time to play and then book a court.
 
         **Core Directives:**
 
         *   **Initiate Planning:** When asked to schedule a game, first determine who to invite and the desired date range from the user.
-        *   **Task Delegation:** Use the `send_message` tool to ask each friend for their availability. Frame your request clearly (e.g., "Are you available for pickleball between 2024-08-01 and 2024-08-03?").
+        *   **Task Delegation:** Use the `send_message` tool to ask each friend for their availability.
+            *   Frame your request clearly (e.g., "Are you available for pickleball between 2024-08-01 and 2024-08-03?").
+            *   Make sure you pass in the official name of the friend agent for each message request.
         *   **Analyze Responses:** Once you have availability from all friends, analyze the responses to find common timeslots.
         *   **Check Court Availability:** Before proposing times to the user, use the `list_court_availabilities` tool to ensure the court is also free at the common timeslots.
         *   **Propose and Confirm:** Present the common, court-available timeslots to the user for confirmation.
@@ -122,32 +121,14 @@ class HostAgent:
         *   **Readability:** Make sure to respond in a concise and easy to read format (bullet points are good).
         *   Each available agent represents a friend. So Bob_Agent represents Bob.
         *   When asked for which friends are available, you should return the names of the available friends (aka the agents that are active).
+        *   When get
 
         **Today's Date (YYYY-MM-DD):** {datetime.now().strftime("%Y-%m-%d")}
 
-        **Agent Roster:**
-
-        *   Available Agents: `{self.agents}`
-        *   Currently Active Agent: `{current_agent["active_agent"]}`
+        <Available Agents>
+        {self.agents}
+        </Available Agents>
         """
-
-    def check_active_agent(self, context: ReadonlyContext):
-        state = context.state
-        if (
-            "session_id" in state
-            and "session_active" in state
-            and state["session_active"]
-            and "active_agent" in state
-        ):
-            return {"active_agent": f"{state['active_agent']}"}
-        return {"active_agent": "None"}
-
-    def before_model_callback(self, callback_context: CallbackContext, llm_request):
-        state = callback_context.state
-        if "session_active" not in state or not state["session_active"]:
-            if "session_id" not in state:
-                state["session_id"] = str(uuid.uuid4())
-            state["session_active"] = True
 
     async def stream(
         self, query: str, session_id: str

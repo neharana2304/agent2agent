@@ -29,7 +29,7 @@ Open a terminal and run the server with the dummy agent:
 uv run .
 ```
 
-The agent will be running on `http://localhost:8000`.
+The agent will be running on `http://localhost:9999`.
 
 ## 3. Run the Test Client
 Open a new terminal and run the test client:

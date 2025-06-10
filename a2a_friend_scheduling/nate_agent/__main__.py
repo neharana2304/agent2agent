@@ -53,7 +53,7 @@ def main(host, port):
 
         agent_host_url = os.getenv("HOST_OVERRIDE") or f"http://{host}:{port}/"
         agent_card = AgentCard(
-            name="Nate's Scheduling Agent",
+            name="Nate Agent",
             description="A friendly agent to help you schedule a pickleball game with Nate.",
             url=agent_host_url,
             version="1.0.0",

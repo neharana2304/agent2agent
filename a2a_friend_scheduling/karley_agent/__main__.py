@@ -52,7 +52,7 @@ def main(host, port):
             examples=["Is Karley free to play pickleball tomorrow?"],
         )
         agent_card = AgentCard(
-            name="Karley_Agent",
+            name="Karley Agent",
             description="An agent that manages Karley's schedule for pickleball games.",
             url=f"http://{host}:{port}/",
             version="1.0.0",
