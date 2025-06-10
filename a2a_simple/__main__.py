@@ -9,14 +9,14 @@ from agent_executor import GreetingAgentExecutor
 def main():
     skill = AgentSkill(
         id="hello_world",
-        name="Hello World",
-        description="A simple agent that returns a message",
-        tags=["hello", "world"],
+        name="Greet",
+        description="Return a greeting",
+        tags=["greeting", "hello", "world"],
         examples=["Hey", "Hello", "Hi"],
     )
 
     agent_card = AgentCard(
-        name="Hello World Agent",
+        name="Greeting Agent",
         description="A simple agent that returns a greeting",
         url="http://localhost:9999/",
         defaultInputModes=["text"],

@@ -1,5 +1,5 @@
 from datetime import date, datetime, timedelta
-from typing import Dict, List
+from typing import Dict
 
 # In-memory database for court schedules, mapping date to a dictionary of time slots and party names
 COURT_SCHEDULE: Dict[str, Dict[str, str]] = {}

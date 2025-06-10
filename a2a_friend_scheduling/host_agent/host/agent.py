@@ -132,7 +132,6 @@ class HostAgent:
         """
 
     def check_active_agent(self, context: ReadonlyContext):
-        # This function may no longer be as relevant but is kept for potential future use.
         state = context.state
         if (
             "session_id" in state
@@ -149,15 +148,6 @@ class HostAgent:
             if "session_id" not in state:
                 state["session_id"] = str(uuid.uuid4())
             state["session_active"] = True
-
-    def list_remote_agents(self):
-        """List the available remote agents you can use to delegate the task."""
-        if not self.cards:
-            return []
-        return [
-            {"name": card.name, "description": card.description}
-            for card in self.cards.values()
-        ]
 
     async def stream(
         self, query: str, session_id: str
