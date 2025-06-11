@@ -135,14 +135,3 @@ class SchedulingAgent:
         )
         result = crew.kickoff()
         return str(result)
-
-
-if __name__ == "__main__":
-    user_question = "Are you free for pickleball tomorrow?"
-    scheduling_agent = SchedulingAgent()
-    result = scheduling_agent.invoke(user_question)
-
-    print("\n\n######################")
-    print("## Here is the result")
-    print("######################\n")
-    print(result)

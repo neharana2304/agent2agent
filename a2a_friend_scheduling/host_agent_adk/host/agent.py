@@ -22,6 +22,7 @@ from google.adk.artifacts import InMemoryArtifactService
 from google.adk.memory.in_memory_memory_service import InMemoryMemoryService
 from google.adk.runners import Runner
 from google.adk.sessions import InMemorySessionService
+from google.adk.tools.tool_context import ToolContext
 from google.genai import types
 
 from .pickleball_tools import (
@@ -168,7 +169,7 @@ class HostAgent:
                     "updates": "The host agent is thinking...",
                 }
 
-    async def send_message(self, agent_name: str, task: str):
+    async def send_message(self, agent_name: str, task: str, tool_context: ToolContext):
         """Sends a task to a remote friend agent."""
         if agent_name not in self.remote_agent_connections:
             raise ValueError(f"Agent {agent_name} not found")
@@ -178,6 +179,9 @@ class HostAgent:
             raise ValueError(f"Client not available for {agent_name}")
 
         # Simplified task and context ID management
+        state = tool_context.state
+        task_id = state.get("task_id", str(uuid.uuid4()))
+        context_id = state.get("context_id", str(uuid.uuid4()))
         message_id = str(uuid.uuid4())
 
         payload = {
@@ -185,6 +189,8 @@ class HostAgent:
                 "role": "user",
                 "parts": [{"type": "text", "text": task}],
                 "messageId": message_id,
+                "taskId": task_id,
+                "contextId": context_id,
             },
         }
 

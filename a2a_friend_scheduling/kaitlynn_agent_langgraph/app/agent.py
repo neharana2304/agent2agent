@@ -102,6 +102,8 @@ class ResponseFormat(BaseModel):
 class KaitlynAgent:
     """KaitlynAgent - a specialized assistant for scheduling."""
 
+    SUPPORTED_CONTENT_TYPES = ["text", "text/plain"]
+
     SYSTEM_INSTRUCTION = (
         "You are Kaitlyn's scheduling assistant. "
         "Your sole purpose is to use the 'get_availability' tool to answer questions about Kaitlyn's schedule for playing pickleball. "
@@ -116,7 +118,7 @@ class KaitlynAgent:
     )
 
     def __init__(self):
-        self.model = ChatGoogleGenerativeAI(model="gemini-1.5-flash")
+        self.model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
         self.tools = [get_availability]
 
         self.graph = create_react_agent(
@@ -192,5 +194,3 @@ class KaitlynAgent:
                 "Please try again."
             ),
         }
-
-    SUPPORTED_CONTENT_TYPES = ["text", "text/plain"]
