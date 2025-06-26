@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: a2a-friend-scheduling
+Version: 0.1.0
+Summary: A multi-agent system for scheduling pickleball games.
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: google-adk>=1.2.1
+Requires-Dist: a2a-sdk>=0.2.5
+Requires-Dist: nest-asyncio>=1.6.0
+Requires-Dist: python-dotenv
+Requires-Dist: click
+Requires-Dist: uvicorn
+Requires-Dist: google-generativeai
+Requires-Dist: httpx

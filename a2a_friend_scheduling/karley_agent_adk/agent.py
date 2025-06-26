@@ -6,6 +6,7 @@ from google.adk.agents import LlmAgent
 
 def generate_karley_calendar() -> dict[str, list[str]]:
     """Generates a random calendar for Karley for the next 7 days."""
+    print("Inside generate calender  function")
     calendar = {}
     today = date.today()
     possible_times = [f"{h:02}:00" for h in range(8, 21)]  # 8 AM to 8 PM
@@ -37,6 +38,7 @@ def get_availability(start_date: str, end_date: str) -> str:
     Returns:
         A string listing Karley's available times for that date range.
     """
+    print("Inside get_availability function")
     try:
         start = datetime.strptime(start_date, "%Y-%m-%d").date()
         end = datetime.strptime(end_date, "%Y-%m-%d").date()
@@ -66,6 +68,7 @@ def get_availability(start_date: str, end_date: str) -> str:
 
 def create_agent() -> LlmAgent:
     """Constructs the ADK agent for Karley."""
+    print("Inside create agent  function")
     return LlmAgent(
         model="gemini-2.5-flash-preview-04-17",
         name="Karley_Agent",

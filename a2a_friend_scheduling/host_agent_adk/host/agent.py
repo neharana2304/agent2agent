@@ -55,16 +55,21 @@ class HostAgent:
         )
 
     async def _async_init_components(self, remote_agent_addresses: List[str]):
+        print("In the init function of host agent")
         async with httpx.AsyncClient(timeout=30) as client:
             for address in remote_agent_addresses:
                 card_resolver = A2ACardResolver(client, address)
                 try:
                     card = await card_resolver.get_agent_card()
+                    print(f"card: {card}, address: {address}")
                     remote_connection = RemoteAgentConnections(
                         agent_card=card, agent_url=address
+
                     )
                     self.remote_agent_connections[card.name] = remote_connection
+                    print(f"Adding card to self.cards: name={card.name}, card={card}")
                     self.cards[card.name] = card
+
                 except httpx.ConnectError as e:
                     print(f"ERROR: Failed to get agent card from {address}: {e}")
                 except Exception as e:
@@ -75,30 +80,43 @@ class HostAgent:
             for card in self.cards.values()
         ]
         print("agent_info:", agent_info)
+        print("Printing self agents here ")
         self.agents = "\n".join(agent_info) if agent_info else "No friends found"
+        print("self.agents:", self.agents)
 
     @classmethod
     async def create(
+
         cls,
+
         remote_agent_addresses: List[str],
+
     ):
         instance = cls()
+        print("Reached in the create function of host agent")
+
         await instance._async_init_components(remote_agent_addresses)
         return instance
 
+
+
     def create_agent(self) -> Agent:
+        print("In creating an adk agent now")
         return Agent(
             model="gemini-2.5-flash-preview-04-17",
             name="Host_Agent",
             instruction=self.root_instruction,
             description="This Host agent orchestrates scheduling pickleball with friends.",
             tools=[
+
                 self.send_message,
                 book_pickleball_court,
                 list_court_availabilities,
             ],
+
         )
 
+    print("Initialzed the adk agent now ")
     def root_instruction(self, context: ReadonlyContext) -> str:
         return f"""
         **Role:** You are the Host Agent, an expert scheduler for pickleball games. Your primary function is to coordinate with friend agents to find a suitable time to play and then book a court.
@@ -128,8 +146,10 @@ class HostAgent:
         """
 
     async def stream(
+
         self, query: str, session_id: str
     ) -> AsyncIterable[dict[str, Any]]:
+        print("In stream method")
         """
         Streams the agent's response to a given query.
         """
@@ -171,9 +191,14 @@ class HostAgent:
 
     async def send_message(self, agent_name: str, task: str, tool_context: ToolContext):
         """Sends a task to a remote friend agent."""
+        print("Task looks like this:",task)
+        print("In send message function")
+        print("Agent name looks like this :", agent_name)
         if agent_name not in self.remote_agent_connections:
             raise ValueError(f"Agent {agent_name} not found")
         client = self.remote_agent_connections[agent_name]
+        print(f"client: {client}")
+
 
         if not client:
             raise ValueError(f"Client not available for {agent_name}")
@@ -197,10 +222,12 @@ class HostAgent:
         message_request = SendMessageRequest(
             id=message_id, params=MessageSendParams.model_validate(payload)
         )
+        print("Payload looks like this:", payload)
         send_response: SendMessageResponse = await client.send_message(message_request)
-        print("send_response", send_response)
+        print("send_response looks like this here ", send_response)
 
         if not isinstance(
+
             send_response.root, SendMessageSuccessResponse
         ) or not isinstance(send_response.root.result, Task):
             print("Received a non-success or non-task response. Cannot proceed.")
@@ -211,9 +238,14 @@ class HostAgent:
 
         resp = []
         if json_content.get("result", {}).get("artifacts"):
+            print("Found artifacts in the response")
             for artifact in json_content["result"]["artifacts"]:
+                print("Artifact:", artifact)
                 if artifact.get("parts"):
+                    print("Parts:", artifact["parts"])
                     resp.extend(artifact["parts"])
+
+        print("resp:", resp)
         return resp
 
 
@@ -231,7 +263,9 @@ def _get_initialized_host_agent_sync():
         print("initializing host agent")
         hosting_agent_instance = await HostAgent.create(
             remote_agent_addresses=friend_agent_urls
+
         )
+        print("friend_agent_urls:", friend_agent_urls)
         print("HostAgent initialized")
         return hosting_agent_instance.create_agent()
 
@@ -246,6 +280,5 @@ def _get_initialized_host_agent_sync():
             )
         else:
             raise
-
-
+print("step 1:Calling the root agent here ")
 root_agent = _get_initialized_host_agent_sync()

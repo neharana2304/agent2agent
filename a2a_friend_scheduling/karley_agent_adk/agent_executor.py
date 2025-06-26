@@ -1,3 +1,4 @@
+
 import asyncio
 import logging
 from collections.abc import AsyncGenerator
@@ -18,6 +19,7 @@ from a2a.types import (
 from a2a.utils.errors import ServerError
 from google.adk import Runner
 from google.adk.events import Event
+from google.cloud.aiplatform_v1beta1 import Session
 from google.genai import types
 
 logger = logging.getLogger(__name__)
@@ -28,6 +30,7 @@ class KarleyAgentExecutor(AgentExecutor):
     """An AgentExecutor that runs Karley's ADK-based Agent."""
 
     def __init__(self, runner: Runner):
+        print("Inside init function")
         self.runner = runner
         self._running_sessions = {}
 
@@ -46,8 +49,11 @@ class KarleyAgentExecutor(AgentExecutor):
     ) -> None:
         session_obj = await self._upsert_session(session_id)
         session_id = session_obj.id
+        print("Inside process request function")
 
         async for event in self._run_agent(session_id, new_message):
+            print("Session ID look like :", session_id)
+            print("New message looks like:", new_message)
             if event.is_final_response():
                 parts = convert_genai_parts_to_a2a(
                     event.content.parts if event.content and event.content.parts else []
@@ -76,15 +82,22 @@ class KarleyAgentExecutor(AgentExecutor):
         context: RequestContext,
         event_queue: EventQueue,
     ):
+        print("Executing Karley Agent with context that looks like", context)
+        print("Event queue looks like:", event_queue)
+        print("Task ID looks like:", context.task_id)
+        print("Context ID looks like:", context.context_id)
         if not context.task_id or not context.context_id:
             raise ValueError("RequestContext must have task_id and context_id")
         if not context.message:
             raise ValueError("RequestContext must have a message")
 
         updater = TaskUpdater(event_queue, context.task_id, context.context_id)
+        print("event queue looks like:", event_queue)
         if not context.current_task:
             updater.submit()
+            print("Im here, submitting the task")
         updater.start_work()
+        print("Im here, starting work and give me updates ")
         await self._process_request(
             types.UserContent(
                 parts=convert_a2a_parts_to_genai(context.message.parts),
